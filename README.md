@@ -12,10 +12,13 @@ Grafana reads the dashboards in `dashboards/`, and (with a token) can commit cha
 ```
 dashboards/              # Root that Grafana syncs (repository path: dashboards/)
 └── Testing/             # Each sub-directory becomes a Grafana folder
+    ├── _folder.json         # Folder UID + title
     └── git-sync-test.json   # "Git Sync Test" dashboard
 ```
 
-- **One directory = one Grafana folder.** Nest directories to nest folders.
+- **One directory = one Grafana folder.** Nest directories to nest folders. Give each directory a `_folder.json`
+  with a fixed `metadata.name` (the folder UID) and `spec.title`. Without it, Grafana generates the folder UID and it
+  can change between syncs, breaking folder links and permissions.
 - **One JSON file = one dashboard.** The file holds the dashboard model, the same JSON you get from
   *Export → Export as JSON* in Grafana. Keep a stable `uid` in each file so the dashboard's URL survives renames.
 - A dashboard can be managed by only one Git Sync repository. Pointing two repositories at the same files makes the second one's sync fail with

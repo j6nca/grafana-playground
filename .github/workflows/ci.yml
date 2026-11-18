@@ -37,6 +37,8 @@ jobs:
 
           uids, ok = {}, True
           for path in sorted(pathlib.Path("dashboards").rglob("*.json")):
+              if path.name == "_folder.json":  # Git Sync folder metadata, not a dashboard
+                  continue
               try:
                   dash = json.loads(path.read_text())
               except json.JSONDecodeError as e:
