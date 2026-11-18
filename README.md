@@ -10,10 +10,16 @@ Grafana reads the dashboards in `dashboards/`, and (with a token) can commit cha
 ## Layout
 
 ```
-dashboards/              # Root that Grafana syncs (repository path: dashboards/)
-└── Testing/             # Each sub-directory becomes a Grafana folder
-    ├── _folder.json         # Folder UID + title
-    └── git-sync-test.json   # "Git Sync Test" dashboard
+dashboards/                      # Root that Grafana syncs (repository path: dashboards/)
+├── Testing/                     # Each sub-directory becomes a Grafana folder
+│   ├── _folder.json             # Folder UID + title (uid: testing)
+│   ├── git-sync-test.json       # "Git Sync Test" (uid: git-sync-test)
+│   └── Subfolder/               # Nested folder: Testing → Subfolder
+│       ├── _folder.json         # (uid: gpg-testing-subfolder)
+│       └── subfolder-test.json  # "Subfolder Test" (uid: gpg-subfolder-test)
+└── Test_Again/
+    ├── _folder.json             # (uid: gpg-test-again)
+    └── git-sync-test.json       # "Git Sync Test" again, different folder (uid: gpg-git-sync-test)
 ```
 
 - **One directory = one Grafana folder.** Nest directories to nest folders. Give each directory a `_folder.json`
@@ -21,6 +27,9 @@ dashboards/              # Root that Grafana syncs (repository path: dashboards/
   can change between syncs, breaking folder links and permissions.
 - **One JSON file = one dashboard.** The file holds the dashboard model, the same JSON you get from
   *Export → Export as JSON* in Grafana. Keep a stable `uid` in each file so the dashboard's URL survives renames.
+- **UIDs follow `gpg-<slug>`** (`gpg` = grafana-playground), for both folders and dashboards. UIDs must be unique across
+  all of Grafana and are at most 40 characters (letters, digits, `-`, `_`). Set them once and never change them, even
+  when renaming or moving. Titles don't need to be unique. `testing` and `git-sync-test` predate the convention.
 - A dashboard can be managed by only one Git Sync repository. Pointing two repositories at the same files makes the second one's sync fail with
   `resource ... is managed by repo ...`.
 

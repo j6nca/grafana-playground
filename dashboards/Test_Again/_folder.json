@@ -1,0 +1,10 @@
+{
+  "apiVersion": "folder.grafana.app/v1beta1",
+  "kind": "Folder",
+  "metadata": {
+    "name": "gpg-test-again"
+  },
+  "spec": {
+    "title": "Test_Again"
+  }
+}
